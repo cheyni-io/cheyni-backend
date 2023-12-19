@@ -7,8 +7,8 @@ import { UpdateUserDto } from 'src/modules/users/dto/update-user.dto';
 import { UsersModule } from 'src/modules/users/users.module';
 
 const options = new DocumentBuilder()
-  .setTitle('Find My Pet - API')
-  .setDescription('API para o projeto Find My Pet')
+  .setTitle('Cheyni - API')
+  .setDescription('CHEYNI API')
   .setVersion('1.0')
   .addTag('Autenticação')
   .build();
