@@ -60,6 +60,7 @@ export class AuthService {
   private generateUserPayload(user: UserEntity) {
     const payload: UserPayloadDTO = {
       id: user.id,
+      name: user.name,
       email: user.email,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,

@@ -1,35 +1,64 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Body,
+  UseGuards,
+  Get,
+  HttpStatus,
+  Delete,
+  Put,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDTO } from './dto/create-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { GetUser } from '../auth/decorators/get-user.decorator';
+import { UserDTO } from './dto/user-responses.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('/auth')
 @ApiTags('Autenticação')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDTO) {
-    return this.usersService.create(createUserDto);
+  @Get()
+  @ApiOperation({ summary: 'Retorna os dados do usuário' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User returned successfully',
+    type: UserDTO,
+  })
+  async getUser(@GetUser() user: UserDTO) {
+    return await this.usersService.findUserById(user.id);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.usersService.findAll();
-  // }
+  @Put()
+  @ApiOperation({ summary: 'Atualiza os dados usuário' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User updated successfully',
+    type: UserDTO,
+  })
+  async updateUser(
+    @GetUser() user: UserDTO,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return await this.usersService.update(user.id, updateUserDto);
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.usersService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.usersService.update(+id, updateUserDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.usersService.remove(+id);
-  // }
+  @Delete()
+  @ApiOperation({ summary: 'Deleta o usuário' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User deleted successfully',
+    type: UserDTO,
+  })
+  async deleteUser(@GetUser() user: UserDTO) {
+    return await this.usersService.delete(user.id);
+  }
 }

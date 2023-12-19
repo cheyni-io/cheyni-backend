@@ -25,10 +25,17 @@ export class UsersRepository extends Repository<UserEntity> {
     return await this.delete(id);
   }
 
+  async findUserById(id: string) {
+    return await this.findOne({
+      where: { id },
+      select: ['id', 'name', 'email', 'password', 'createdAt', 'updatedAt'],
+    });
+  }
+
   async findUserByEmail(email: string) {
     return await this.findOne({
       where: { email },
-      select: ['id', 'email', 'password', 'createdAt', 'updatedAt'],
+      select: ['id', 'name', 'email', 'password', 'createdAt', 'updatedAt'],
     });
   }
 }
