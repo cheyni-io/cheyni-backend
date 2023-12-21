@@ -3,6 +3,7 @@ import { UserEntity } from 'src/entities/user.entity';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UsersRepository } from './users.repository';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -15,11 +16,15 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    return await this.userRepository
+    if (updateUserDto.password) {
+      // Aplicar o hash na senha
+      const salt = await bcrypt.genSalt();
+      updateUserDto.password = await bcrypt.hash(updateUserDto.password, salt);
+    }
+
+    return this.userRepository
       .updateUser(id, updateUserDto)
-      .then(() => {
-        return 'User updated successfully';
-      })
+      .then(() => 'User updated successfullys')
       .catch((error) => {
         throw new BadRequestException(error);
       });
