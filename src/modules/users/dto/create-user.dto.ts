@@ -42,6 +42,5 @@ export class CreateUserDTO {
   zipCode: string;
 
   @ApiProperty({ type: String, description: 'password' })
-  @IsNotEmpty({ message: 'password is required' })
   password: string;
 }

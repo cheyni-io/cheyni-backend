@@ -28,7 +28,15 @@ export class UsersRepository extends Repository<UserEntity> {
   async findUserById(id: string) {
     return await this.findOne({
       where: { id },
-      select: ['id', 'name', 'email', 'birthDate', 'password', 'createdAt', 'updatedAt'],
+      select: [
+        'id',
+        'name',
+        'email',
+        'birthDate',
+        'password',
+        'createdAt',
+        'updatedAt',
+      ],
     });
   }
 
