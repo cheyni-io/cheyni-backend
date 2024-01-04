@@ -1,6 +1,8 @@
 import {
+  Body,
   Controller,
   Get,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -17,8 +19,23 @@ export class UploadController {
   @Post()
   @ApiOperation({ summary: 'Uploads a file' })
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    await this.uploadService.upload(file.originalname, file.buffer);
+  async uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('title') title: string,
+    @Body('description') description: string,
+    @Body('duration') duration: string,
+    @Body('genre') genre: string,
+    @Body('thumbnail') thumbnail: string,
+  ) {
+    await this.uploadService.upload(
+      file.originalname,
+      file.buffer,
+      title,
+      description,
+      duration,
+      genre,
+      thumbnail,
+    );
     return {
       message: 'File uploaded successfully',
     };
@@ -30,9 +47,9 @@ export class UploadController {
     return await this.uploadService.getAllVideos();
   }
 
-  @Get('/:id')
+  @Get(':id')
   @ApiOperation({ summary: 'Retorna um vídeo' })
-  async getVideoById(id: string) {
+  async getVideoById(@Param('id') id: string) {
     return await this.uploadService.getVideoById(id);
   }
 }

@@ -16,10 +16,23 @@ export class UploadService {
     private readonly uploadRepository: UploadRepository,
   ) {}
 
-  async upload(fileName: string, file: Buffer) {
+  async upload(
+    fileName: string,
+    file: Buffer,
+    title: string,
+    description: string,
+    duration: string,
+    genre: string,
+    thumbnail: string,
+  ) {
     const newUpload = new UploadEntity({
       ...new CreateUploadDTO(),
       name: fileName,
+      description: description,
+      title: title,
+      duration: duration,
+      genre: genre,
+      thumbnail: thumbnail,
     });
     await this.s3Client.send(
       new PutObjectCommand({

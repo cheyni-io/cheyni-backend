@@ -14,6 +14,7 @@ export class UploadRepository extends Repository<UploadEntity> {
   }
 
   async saveVideo(video: UploadEntity) {
+    console.log(video);
     return await this.save(this.create(video));
   }
 
@@ -26,18 +27,12 @@ export class UploadRepository extends Repository<UploadEntity> {
   }
 
   async findVideoById(id: string) {
+    console.log(id);
     return await this.findOne({
-      where: { id },
-      select: [
-        'id',
-        'name',
-        'description',
-        'duration',
-        'genre',
-        'thumbnail',
-        'createdAt',
-        'updatedAt',
-      ],
+      where: {
+        id: id,
+      },
+      select: ['id', 'name', 'description', 'createdAt', 'updatedAt'],
     });
   }
 
