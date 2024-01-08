@@ -16,7 +16,4 @@ export class CreateUploadDTO {
 
   @ApiProperty({ type: String, description: 'thumbnail' })
   thumbnail: string;
-
-  @ApiProperty({ type: String, description: 'category' })
-  category: string;
 }

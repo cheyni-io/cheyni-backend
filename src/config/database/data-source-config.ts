@@ -3,6 +3,7 @@ import { join } from 'path';
 
 import { UserEntity } from 'src/entities/user.entity';
 import { UploadEntity } from 'src/entities/upload.entity';
+import { GenreEntity } from 'src/entities/genres.entity';
 
 export const AppDataSource = (database: string) =>
   new DataSource({
@@ -16,7 +17,7 @@ export const AppDataSource = (database: string) =>
     synchronize: true,
     migrationsRun: true,
     logging: true,
-    entities: [UserEntity, UploadEntity],
+    entities: [UserEntity, UploadEntity, GenreEntity],
     migrations: [join(__dirname, '..', '..', '/migrations')],
     migrationsTableName: 'migrations',
   });
@@ -38,7 +39,7 @@ export const AppDataSource = (database: string) =>
 //     synchronize: true,
 //     migrationsRun: true,
 //     logging: true,
-//     entities: [UserEntity, UploadEntity],
+//     entities: [UserEntity, UploadEntity, GenreEntity],
 //     migrations: [join(__dirname, '..', '..', '/migrations')],
 //     migrationsTableName: 'migrations',
 //   });

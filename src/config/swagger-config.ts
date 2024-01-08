@@ -1,6 +1,8 @@
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { signInDTO } from 'src/modules/auth/dto/signIn.dto';
+import { GenreDTO } from 'src/modules/genres/dto/genre-responses.dto';
+import { GenresModule } from 'src/modules/genres/genres.module';
 import { UploadDTO } from 'src/modules/upload/dto/upload-responses.dto';
 import { UploadModule } from 'src/modules/upload/upload.module';
 
@@ -15,9 +17,15 @@ const options = new DocumentBuilder()
   .addTag('Autenticação')
   .build();
 
-const modules = [UsersModule, AuthModule, UploadModule];
+const modules = [UsersModule, AuthModule, UploadModule, GenresModule];
 
-const extraModels = [CreateUserDTO, UpdateUserDto, signInDTO, UploadDTO];
+const extraModels = [
+  CreateUserDTO,
+  UpdateUserDto,
+  signInDTO,
+  UploadDTO,
+  GenreDTO,
+];
 
 export class SwaggerConfig {
   public static getData(app: any) {
