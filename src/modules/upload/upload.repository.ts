@@ -40,6 +40,7 @@ export class UploadRepository extends Repository<UploadEntity> {
         'description',
         'createdAt',
         'updatedAt',
+        'thumbnail',
       ],
     });
   }
