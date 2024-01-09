@@ -4,10 +4,10 @@ import {
   Get,
   Param,
   Post,
-  UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -18,26 +18,33 @@ export class UploadController {
 
   @Post()
   @ApiOperation({ summary: 'Uploads a file' })
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'file', maxCount: 1 },
+      { name: 'image', maxCount: 1 },
+    ]),
+  )
   async uploadFile(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files,
     @Body('title') title: string,
     @Body('description') description: string,
     @Body('duration') duration: string,
     @Body('genre') genre: string,
-    @Body('thumbnail') thumbnail: string,
   ) {
+    console.log(files);
     await this.uploadService.upload(
-      file.originalname,
-      file.buffer,
+      files.file[0].originalname,
+      files.file[0].buffer,
+      files.image[0].originalname,
+      files.image[0].buffer,
+      // thumbnailFile,
       title,
       description,
       duration,
       genre,
-      thumbnail,
     );
     return {
-      message: 'File uploaded successfully',
+      message: 'Files uploaded successfully',
     };
   }
 

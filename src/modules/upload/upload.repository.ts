@@ -36,7 +36,6 @@ export class UploadRepository extends Repository<UploadEntity> {
         'name',
         'title',
         'duration',
-        'thumbnail',
         'genre',
         'description',
         'createdAt',

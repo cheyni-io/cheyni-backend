@@ -19,26 +19,37 @@ export class UploadService {
   async upload(
     fileName: string,
     file: Buffer,
+    thumbnailName: string,
+    thumbnail: Buffer,
     title: string,
     description: string,
     duration: string,
     genre: string,
-    thumbnail: string,
   ) {
+    console.log('upload service');
     const newUpload = new UploadEntity({
       ...new CreateUploadDTO(),
       name: fileName,
+      thumbnail: thumbnailName,
       description: description,
       title: title,
       duration: duration,
       genre: genre,
-      thumbnail: thumbnail,
     });
+    console.log(newUpload);
     await this.s3Client.send(
       new PutObjectCommand({
         Bucket: 'cheyni',
         Key: fileName,
         Body: file,
+      }),
+    );
+
+    await this.s3Client.send(
+      new PutObjectCommand({
+        Bucket: 'cheyni',
+        Key: thumbnailName,
+        Body: thumbnail,
       }),
     );
     return await this.uploadRepository.saveVideo(newUpload);
