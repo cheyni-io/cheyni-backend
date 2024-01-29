@@ -6,9 +6,11 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   BeforeUpdate,
+  OneToMany,
 } from 'typeorm';
 
 import * as bcrypt from 'bcryptjs';
+import { NFTokenAndUserEntity } from './nfTokenAndUser.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -57,6 +59,15 @@ export class UserEntity {
 
   @Column({ nullable: true })
   zipCode: string;
+
+  @Column({ nullable: true })
+  balance: string;
+
+  @OneToMany(
+    () => NFTokenAndUserEntity,
+    (nfTokenAndUser) => nfTokenAndUser.user,
+  )
+  nfTokenAndUser: NFTokenAndUserEntity[];
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

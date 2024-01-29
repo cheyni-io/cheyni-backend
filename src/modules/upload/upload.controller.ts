@@ -31,7 +31,6 @@ export class UploadController {
     @Body('duration') duration: string,
     @Body('genre') genre: string,
   ) {
-    console.log(files);
     await this.uploadService.upload(
       files.file[0].originalname,
       files.file[0].buffer,

@@ -41,6 +41,9 @@ export class CreateUserDTO {
   @ApiProperty({ type: String, description: 'zipCode' })
   zipCode: string;
 
+  @ApiProperty({ type: String, description: 'balance' })
+  balance: string;
+
   @ApiProperty({ type: String, description: 'password' })
   password: string;
 }

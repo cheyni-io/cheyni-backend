@@ -9,6 +9,9 @@ import { UploadModule } from 'src/modules/upload/upload.module';
 import { CreateUserDTO } from 'src/modules/users/dto/create-user.dto';
 import { UpdateUserDto } from 'src/modules/users/dto/update-user.dto';
 import { UsersModule } from 'src/modules/users/users.module';
+import { CreateNftokenDto } from 'src/modules/nftoken/dto/create-nftoken.dto';
+import { NftokenModule } from 'src/modules/nftoken/nftoken.module';
+import { NfTokenAndUserModule } from 'src/modules/nf-token-and-user/nf-token-and-user.module';
 
 const options = new DocumentBuilder()
   .setTitle('Cheyni - API')
@@ -17,7 +20,14 @@ const options = new DocumentBuilder()
   .addTag('Autenticação')
   .build();
 
-const modules = [UsersModule, AuthModule, UploadModule, GenresModule];
+const modules = [
+  UsersModule,
+  AuthModule,
+  UploadModule,
+  GenresModule,
+  NftokenModule,
+  NfTokenAndUserModule,
+];
 
 const extraModels = [
   CreateUserDTO,
@@ -25,6 +35,7 @@ const extraModels = [
   signInDTO,
   UploadDTO,
   GenreDTO,
+  CreateNftokenDto,
 ];
 
 export class SwaggerConfig {

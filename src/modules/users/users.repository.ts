@@ -27,6 +27,7 @@ export class UsersRepository extends Repository<UserEntity> {
 
   async findUserById(id: string) {
     return await this.findOne({
+      relations: ['nfTokenAndUser', 'nfTokenAndUser.nftoken'],
       where: { id },
       select: [
         'id',

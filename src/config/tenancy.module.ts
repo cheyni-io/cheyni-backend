@@ -15,7 +15,6 @@ const connectionFactory = {
     const tenant = 'default';
 
     const dataSource = AppDataSource(tenant);
-
     try {
       return await dataSource.initialize();
     } catch (error) {

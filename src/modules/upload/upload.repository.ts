@@ -26,8 +26,8 @@ export class UploadRepository extends Repository<UploadEntity> {
   }
 
   async findVideoById(id: string) {
-    console.log(id);
     return await this.findOne({
+      relations: ['nftoken'],
       where: {
         id: id,
       },

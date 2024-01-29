@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { UsersRepository } from '../users/users.repository';
 import { JwtService } from '@nestjs/jwt';
@@ -7,6 +11,9 @@ import { UserEntity } from 'src/entities/user.entity';
 import { signInDTO } from './dto/signIn.dto';
 import * as bcrypt from 'bcrypt';
 import { UserPayloadDTO } from './dto/user-payload.dto';
+
+//Qual exception usar para o erro de usuário já existente?
+// import { BadRequestException } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +24,12 @@ export class AuthService {
   ) {}
 
   async createUser(user: CreateUserDTO) {
+    //Verificar se já existe um usuário com o mesmo email
+    const userExists = await this.userRepository.findUserByEmail(user.email);
+
+    if (userExists) {
+      throw new BadRequestException('User already exists');
+    }
     const newUser = new UserEntity({ ...user });
 
     return await this.userRepository

@@ -6,17 +6,17 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   BeforeUpdate,
-  ManyToOne,
+  OneToOne,
   OneToMany,
 } from 'typeorm';
 
-import { NFTokenEntity } from './nftoken.entity';
+import { UploadEntity } from './upload.entity';
 import { NFTokenAndUserEntity } from './nfTokenAndUser.entity';
 
-@Entity('uploads')
-export class UploadEntity {
-  constructor(upload?: Partial<UploadEntity>) {
-    Object.assign(this, upload);
+@Entity('nf_tokens')
+export class NFTokenEntity {
+  constructor(token?: Partial<NFTokenEntity>) {
+    Object.assign(this, token);
   }
 
   @PrimaryGeneratedColumn('uuid')
@@ -25,28 +25,24 @@ export class UploadEntity {
   @Column({ nullable: false })
   name: string;
 
-  @Column({ nullable: true })
-  title: string;
+  @Column({ nullable: false })
+  token: string;
 
-  @Column({ nullable: true })
-  description: string;
+  @OneToOne(() => UploadEntity, (upload) => upload.nftoken, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  upload: UploadEntity;
 
-  @Column({ nullable: true })
-  duration: string;
-
-  @Column({ nullable: true })
-  genre: string;
-
-  @Column({ nullable: true })
-  thumbnail: string;
-
-  @Column({ nullable: true })
-  url: string;
-
-  //Cada vídeo pode ter um NFT associado
-  @ManyToOne(() => NFTokenEntity, (nftoken) => nftoken.upload)
-  nftoken: NFTokenEntity;
-
+  // @OneToMany(
+  //   () => NFTokenAndUserEntity,
+  //   (nfTokenAndUser) => nfTokenAndUser.nftoken,
+  //   {
+  //     cascade: true,
+  //     onDelete: 'CASCADE',
+  //   },
+  // )
+  // nfTokenAndUser: NFTokenAndUserEntity[]; // Adicionado para suportar a relação One-to-Many
   @OneToMany(
     () => NFTokenAndUserEntity,
     (nfTokenAndUser) => nfTokenAndUser.user,

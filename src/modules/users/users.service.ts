@@ -10,6 +10,15 @@ export class UsersService {
   constructor(private readonly userRepository: UsersRepository) {}
 
   async create(createUserDto: CreateUserDTO) {
+    //Antes de criar o usuário, verificar se já existe um usuário com o mesmo email
+    const userExists = await this.userRepository.findUserByEmail(
+      createUserDto.email,
+    );
+
+    if (userExists) {
+      throw new BadRequestException('User already exists');
+    }
+
     const newUser = new UserEntity({ ...createUserDto });
 
     return await this.userRepository.saveUser(newUser);

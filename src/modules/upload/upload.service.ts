@@ -26,7 +26,6 @@ export class UploadService {
     duration: string,
     genre: string,
   ) {
-    console.log('upload service');
     const newUpload = new UploadEntity({
       ...new CreateUploadDTO(),
       name: fileName,
@@ -36,7 +35,6 @@ export class UploadService {
       duration: duration,
       genre: genre,
     });
-    console.log(newUpload);
     await this.s3Client.send(
       new PutObjectCommand({
         Bucket: 'cheyni',
