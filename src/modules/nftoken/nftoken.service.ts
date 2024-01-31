@@ -21,7 +21,7 @@ export class NftokenService {
   }
 
   async findAll() {
-    return await this.nftokenRepository.findAllNftokens();
+    return await this.nftokenRepository.find();
   }
 
   async findOne(id: string) {

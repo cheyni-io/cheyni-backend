@@ -1,8 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
+  ParseFilePipe,
+  Patch,
   Post,
   UploadedFiles,
   UseInterceptors,
@@ -30,6 +33,7 @@ export class UploadController {
     @Body('description') description: string,
     @Body('duration') duration: string,
     @Body('genre') genre: string,
+    @Body('nftoken') nftoken: string,
   ) {
     await this.uploadService.upload(
       files.file[0].originalname,
@@ -41,9 +45,58 @@ export class UploadController {
       description,
       duration,
       genre,
+      nftoken,
     );
     return {
       message: 'Files uploaded successfully',
+    };
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Atualiza um vídeo' })
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'file', maxCount: 1 },
+      { name: 'image', maxCount: 1 },
+    ]),
+  )
+  async updateVideo(
+    @Param('id') id: string,
+    @UploadedFiles(
+      new ParseFilePipe({
+        fileIsRequired: false,
+      }),
+    )
+    files?,
+    @Body('title') title?: string,
+    @Body('description') description?: string,
+    @Body('duration') duration?: string,
+    @Body('genre') genre?: string,
+    @Body('nftoken') nftoken?: string,
+  ) {
+    await this.uploadService.updateVideo(
+      id,
+      files.file[0].originalname,
+      files.file[0].buffer,
+      files.image[0].originalname,
+      files.image[0].buffer,
+      title,
+      description,
+      duration,
+      genre,
+      nftoken,
+    );
+    return {
+      message: 'Video updated successfully',
+    };
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Deleta um vídeo' })
+  async deleteVideo(@Param('id') id: string) {
+    await this.uploadService.deleteVideo(id);
+    return {
+      message: 'Video deleted successfully',
     };
   }
 

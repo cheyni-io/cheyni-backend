@@ -46,10 +46,7 @@ export class NftokenController {
     description: 'Get all NFToken',
   })
   async findAll() {
-    return new ResponseDTO({
-      message: 'Get all NFToken',
-      data: this.nftokenService.findAll(),
-    });
+    return this.nftokenService.findAll();
   }
 
   @Get(':id')

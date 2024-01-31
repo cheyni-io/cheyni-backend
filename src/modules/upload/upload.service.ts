@@ -25,6 +25,7 @@ export class UploadService {
     description: string,
     duration: string,
     genre: string,
+    nftoken: string,
   ) {
     const newUpload = new UploadEntity({
       ...new CreateUploadDTO(),
@@ -34,6 +35,7 @@ export class UploadService {
       title: title,
       duration: duration,
       genre: genre,
+      nftoken: nftoken,
     });
     await this.s3Client.send(
       new PutObjectCommand({
@@ -51,6 +53,77 @@ export class UploadService {
       }),
     );
     return await this.uploadRepository.saveVideo(newUpload);
+  }
+
+  async updateVideo(
+    id: string,
+    fileName?: string,
+    file?: Buffer,
+    thumbnailName?: string,
+    thumbnail?: Buffer,
+    title?: string,
+    description?: string,
+    duration?: string,
+    genre?: string,
+    nftoken?: string,
+  ) {
+    const video = await this.uploadRepository.findVideoById(id);
+    if (fileName) {
+      await this.s3Client.send(
+        new PutObjectCommand({
+          Bucket: 'cheyni',
+          Key: fileName,
+          Body: file,
+        }),
+      );
+    } else {
+      fileName = video.name;
+    }
+    if (thumbnailName) {
+      await this.s3Client.send(
+        new PutObjectCommand({
+          Bucket: 'cheyni',
+          Key: thumbnailName,
+          Body: thumbnail,
+        }),
+      );
+    } else {
+      thumbnailName = video.thumbnail;
+    }
+    const updatedVideo = new UploadEntity({
+      ...video,
+      name: fileName,
+      thumbnail: thumbnailName,
+      description: description || video.description,
+      title: title || video.title,
+      duration: duration || video.duration,
+      genre: genre || video.genre,
+      nftoken: nftoken || video.nftoken,
+    });
+    return await this.uploadRepository.updateVideo(id, updatedVideo);
+  }
+
+  //Update video without file, keeping the same file
+  async updateVideoWithoutFile(
+    id: string,
+    title: string,
+    description: string,
+    duration: string,
+    genre: string,
+  ) {
+    const video = await this.uploadRepository.findVideoById(id);
+    const updatedVideo = new UploadEntity({
+      ...video,
+      description: description || video.description,
+      title: title || video.title,
+      duration: duration || video.duration,
+      genre: genre || video.genre,
+    });
+    return await this.uploadRepository.updateVideo(id, updatedVideo);
+  }
+
+  async deleteVideo(id: string) {
+    return await this.uploadRepository.deleteVideo(id);
   }
 
   async getAllVideos() {

@@ -45,7 +45,7 @@ export class UploadEntity {
 
   //Cada vídeo pode ter um NFT associado
   @ManyToOne(() => NFTokenEntity, (nftoken) => nftoken.upload)
-  nftoken: NFTokenEntity;
+  nftoken: string;
 
   @OneToMany(
     () => NFTokenAndUserEntity,
