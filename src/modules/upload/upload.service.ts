@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { UploadRepository } from './upload.repository';
 import { UploadEntity } from 'src/entities/upload.entity';
 import { CreateUploadDTO } from './dto/upload-video.dto';
+import { UsersRepository } from '../users/users.repository';
 
 @Injectable()
 export class UploadService {
@@ -14,6 +15,7 @@ export class UploadService {
   constructor(
     private readonly configService: ConfigService,
     private readonly uploadRepository: UploadRepository,
+    private readonly usersRepository: UsersRepository,
   ) {}
 
   async upload(
@@ -120,6 +122,10 @@ export class UploadService {
       genre: genre || video.genre,
     });
     return await this.uploadRepository.updateVideo(id, updatedVideo);
+  }
+
+  async getAllUsers() {
+    return await this.usersRepository.find();
   }
 
   async deleteVideo(id: string) {

@@ -106,6 +106,12 @@ export class UploadController {
     return await this.uploadService.getAllVideos();
   }
 
+  @Get('/users')
+  @ApiOperation({ summary: 'Retorna todos os usuários' })
+  async getAllUsers() {
+    return await this.uploadService.getAllUsers();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Retorna um vídeo' })
   async getVideoById(@Param('id') id: string) {
