@@ -4,8 +4,8 @@ import {
   Body,
   UseGuards,
   Get,
-  UnauthorizedException,
   BadRequestException,
+  Param,
 } from '@nestjs/common';
 import { NfTokenAndUserService } from './nf-token-and-user.service';
 import { CreateNFTokenAndUserDto } from './dto/create-nf-token-and-user.dto';
@@ -42,14 +42,13 @@ export class NfTokenAndUserController {
     return this.nfTokenAndUserService.create(userId, createNfTokenAndUserDto);
   }
 
-  @Get('/has-token')
+  @Get('/has-token/:id')
   @UseGuards(JwtAuthGuard)
   async userHasToken(
-    @Body('nftokenId') nftokenId: string,
     @GetUser() user: UserPayloadDTO,
+    @Param('id') nftokenId: string,
   ): Promise<boolean> {
-    const userId = user.id;
-    return this.nfTokenAndUserService.userHasToken(userId, nftokenId);
+    return await this.nfTokenAndUserService.userHasToken(user.id, nftokenId);
   }
 
   // @Get()
