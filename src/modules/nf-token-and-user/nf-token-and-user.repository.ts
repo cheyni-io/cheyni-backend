@@ -15,4 +15,13 @@ export class NfTokenAndUserRepository extends Repository<NFTokenAndUserEntity> {
   async saveNfTokenAndUser(nfTokenAndUser: NFTokenAndUserEntity) {
     return await this.save(this.create(nfTokenAndUser));
   }
+
+  async hasToken(userId: string, nfTokenId: string): Promise<boolean> {
+    const result = await this.createQueryBuilder('nfTokenAndUser')
+      .where('nfTokenAndUser.user = :userId', { userId })
+      .andWhere('nfTokenAndUser.nftoken = :nfTokenId', { nfTokenId })
+      .getOne();
+
+    return !!result; // Retorna true se encontrar uma correspondência, false se não encontrar
+  }
 }

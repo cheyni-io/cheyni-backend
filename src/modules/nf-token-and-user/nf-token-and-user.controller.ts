@@ -1,4 +1,11 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { NfTokenAndUserService } from './nf-token-and-user.service';
 import { CreateNFTokenAndUserDto } from './dto/create-nf-token-and-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -11,12 +18,37 @@ export class NfTokenAndUserController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  create(
+  async create(
     @Body() createNfTokenAndUserDto: CreateNFTokenAndUserDto,
     @GetUser() user: UserPayloadDTO,
   ) {
     const userId = user.id;
+
+    //Chamar o userHasToken para verificar se o usuário já possui o token
+    //Se já possuir, retornar um erro
+    //Se não possuir, chamar o create
+    const hasToken = await this.nfTokenAndUserService.userHasToken(
+      userId,
+      createNfTokenAndUserDto.nftoken,
+    );
+
+    if (hasToken) {
+      throw new UnauthorizedException({
+        message: 'Woops! You already have this token!',
+      });
+    }
+
     return this.nfTokenAndUserService.create(userId, createNfTokenAndUserDto);
+  }
+
+  @Get('/has-token')
+  @UseGuards(JwtAuthGuard)
+  async userHasToken(
+    @Body('nftokenId') nftokenId: string,
+    @GetUser() user: UserPayloadDTO,
+  ): Promise<boolean> {
+    const userId = user.id;
+    return this.nfTokenAndUserService.userHasToken(userId, nftokenId);
   }
 
   // @Get()

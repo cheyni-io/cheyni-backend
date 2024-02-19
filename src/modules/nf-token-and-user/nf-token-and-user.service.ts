@@ -22,6 +22,10 @@ export class NfTokenAndUserService {
       nfTokenAndUser,
     );
   }
+
+  async userHasToken(userId: string, nfTokenId: string): Promise<boolean> {
+    return await this.nfTokenAndUserRepository.hasToken(userId, nfTokenId);
+  }
 }
 
 // findAll() {

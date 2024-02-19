@@ -45,7 +45,11 @@ export class NFTokenEntity {
   // nfTokenAndUser: NFTokenAndUserEntity[]; // Adicionado para suportar a relação One-to-Many
   @OneToMany(
     () => NFTokenAndUserEntity,
-    (nfTokenAndUser) => nfTokenAndUser.user,
+    (nfTokenAndUser) => nfTokenAndUser.nftoken,
+    {
+      cascade: true,
+      onDelete: 'CASCADE',
+    },
   )
   nfTokenAndUser: NFTokenAndUserEntity[];
 
