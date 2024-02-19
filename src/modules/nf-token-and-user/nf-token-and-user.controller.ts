@@ -5,6 +5,7 @@ import {
   UseGuards,
   Get,
   UnauthorizedException,
+  BadRequestException,
 } from '@nestjs/common';
 import { NfTokenAndUserService } from './nf-token-and-user.service';
 import { CreateNFTokenAndUserDto } from './dto/create-nf-token-and-user.dto';
@@ -33,7 +34,7 @@ export class NfTokenAndUserController {
     );
 
     if (hasToken) {
-      throw new UnauthorizedException({
+      throw new BadRequestException({
         message: 'Woops! You already have this token!',
       });
     }
