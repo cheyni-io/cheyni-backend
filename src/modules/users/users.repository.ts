@@ -14,7 +14,7 @@ export class UsersRepository extends Repository<UserEntity> {
   }
 
   async saveUser(user: UserEntity) {
-    return await this.save(this.create(user));
+    return await this.save(user);
   }
 
   async updateUser(id: string, user: UpdateUserDto) {

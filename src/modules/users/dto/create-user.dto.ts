@@ -14,8 +14,8 @@ export class CreateUserDTO {
   @IsNotEmpty({ message: 'birthDate is required' })
   birthDate: string;
 
-  @ApiProperty({ type: String, description: 'profilePicture' })
-  profilePicture: string;
+  @ApiProperty({ type: String, description: 'avatar' })
+  avatar: string;
 
   @ApiProperty({ type: String, description: 'address' })
   address: string;

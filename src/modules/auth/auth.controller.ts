@@ -18,7 +18,11 @@ export class AuthController {
     type: CreateUserDTO,
   })
   async createUser(@Body() dto: CreateUserDTO) {
-    return await this.authService.createUser(dto);
+    dto.avatar = String.fromCodePoint(
+      0x1f600 + Math.floor(Math.random() * 100),
+    );
+
+    return this.authService.createUser(dto);
   }
 
   @Post('/signIn')
