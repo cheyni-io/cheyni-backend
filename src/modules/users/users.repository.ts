@@ -33,6 +33,7 @@ export class UsersRepository extends Repository<UserEntity> {
         'id',
         'name',
         'email',
+        'avatar',
         'birthDate',
         'password',
         'createdAt',
