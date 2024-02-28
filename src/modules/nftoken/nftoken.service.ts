@@ -2,22 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { CreateNftokenDto } from './dto/create-nftoken.dto';
 // import { UpdateNftokenDto } from './dto/update-nftoken.dto';
 import { NftokenRepository } from './nftoken.repository';
+import { NFTokenEntity } from 'src/entities/nftoken.entity';
+import { uuid } from 'uuidv4';
 
 @Injectable()
 export class NftokenService {
   constructor(private readonly nftokenRepository: NftokenRepository) {}
 
-  create(createNftokenDto: CreateNftokenDto) {
-    const nftoken = this.nftokenRepository.create(createNftokenDto);
+  async create(createNftokenDto: CreateNftokenDto): Promise<NFTokenEntity> {
+    const randomHash = this.generateRandomHash();
+    const nftoken = this.nftokenRepository.create({
+      ...createNftokenDto,
+      hash: randomHash,
+    });
+    return this.nftokenRepository.save(nftoken);
+  }
 
-    return this.nftokenRepository
-      .save(nftoken)
-      .then(() => {
-        'NFToken created successfully';
-      })
-      .catch(() => {
-        'NFToken creation failed, please try again later';
-      });
+  private generateRandomHash(): string {
+    return uuid();
   }
 
   async findAll() {

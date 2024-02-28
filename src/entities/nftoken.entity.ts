@@ -28,6 +28,9 @@ export class NFTokenEntity {
   @Column({ nullable: false })
   token: string;
 
+  @Column({ nullable: false })
+  hash: string;
+
   @OneToOne(() => UploadEntity, (upload) => upload.nftoken, {
     cascade: true,
     onDelete: 'CASCADE',
@@ -60,8 +63,12 @@ export class NFTokenEntity {
   updatedAt: Date;
 
   @BeforeInsert()
+  updateCreatedAt() {
+    this.createdAt = new Date();
+  }
+
   @BeforeUpdate()
-  updateDates() {
+  updateUpdatedAt() {
     this.updatedAt = new Date();
   }
 }

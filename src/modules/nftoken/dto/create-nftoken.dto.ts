@@ -9,4 +9,7 @@ export class CreateNftokenDto {
   @ApiProperty({ type: String, description: 'name' })
   @IsNotEmpty({ message: 'name is required' })
   name: string;
+
+  @ApiProperty({ type: String, description: 'hash' })
+  hash: string;
 }

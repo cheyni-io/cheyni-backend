@@ -112,6 +112,7 @@ export class UploadService {
     description: string,
     duration: string,
     genre: string,
+    nftoken: string,
   ) {
     const video = await this.uploadRepository.findVideoById(id);
     const updatedVideo = new UploadEntity({
@@ -120,6 +121,7 @@ export class UploadService {
       title: title || video.title,
       duration: duration || video.duration,
       genre: genre || video.genre,
+      nftoken: nftoken || video.nftoken,
     });
     return await this.uploadRepository.updateVideo(id, updatedVideo);
   }

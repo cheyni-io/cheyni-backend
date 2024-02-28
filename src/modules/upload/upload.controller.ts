@@ -74,18 +74,31 @@ export class UploadController {
     @Body('genre') genre?: string,
     @Body('nftoken') nftoken?: string,
   ) {
-    await this.uploadService.updateVideo(
-      id,
-      files.file[0].originalname,
-      files.file[0].buffer,
-      files.image[0].originalname,
-      files.image[0].buffer,
-      title,
-      description,
-      duration,
-      genre,
-      nftoken,
-    );
+    if (files && files.file && files.file[0] && files.image && files.image[0]) {
+      await this.uploadService.updateVideo(
+        id,
+        files.file[0].originalname,
+        files.file[0].buffer,
+        files.image[0].originalname,
+        files.image[0].buffer,
+        title,
+        description,
+        duration,
+        genre,
+        nftoken,
+      );
+    } else {
+      // Update without new file and thumbnail
+      await this.uploadService.updateVideoWithoutFile(
+        id,
+        title,
+        description,
+        duration,
+        genre,
+        nftoken,
+      );
+    }
+
     return {
       message: 'Video updated successfully',
     };

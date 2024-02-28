@@ -9,6 +9,9 @@ export class NFTokenDTO {
   @ApiProperty({ type: String, description: 'name' })
   name: string;
 
+  @ApiProperty({ type: String, description: 'hash' })
+  hash: string;
+
   @ApiProperty({ type: String, description: 'createdAt' })
   createdAt: Date;
 

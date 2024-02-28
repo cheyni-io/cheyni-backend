@@ -13,7 +13,7 @@ export class NftokenRepository extends Repository<NFTokenEntity> {
   }
 
   async saveNftoken(nftoken: NFTokenEntity) {
-    return await this.save(this.create(nftoken));
+    return this.save(nftoken);
   }
 
   async updateNftoken(id: string, nftoken: NFTokenEntity) {
@@ -36,7 +36,7 @@ export class NftokenRepository extends Repository<NFTokenEntity> {
       where: {
         id: id,
       },
-      select: ['id', 'name', 'token', 'createdAt', 'updatedAt'],
+      select: ['id', 'name', 'token', 'hash', 'createdAt', 'updatedAt'],
     });
   }
 }
