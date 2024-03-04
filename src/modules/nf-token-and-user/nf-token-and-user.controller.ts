@@ -12,8 +12,12 @@ import { CreateNFTokenAndUserDto } from './dto/create-nf-token-and-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { UserPayloadDTO } from '../auth/dto/user-payload.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('nf-token-and-user')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class NfTokenAndUserController {
   constructor(private readonly nfTokenAndUserService: NfTokenAndUserService) {}
 

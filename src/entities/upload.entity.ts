@@ -41,6 +41,9 @@ export class UploadEntity {
   thumbnail: string;
 
   @Column({ nullable: true })
+  mobileThumbnail: string;
+
+  @Column({ nullable: true })
   url: string;
 
   //Cada vídeo pode ter um NFT associado

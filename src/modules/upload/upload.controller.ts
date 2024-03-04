@@ -8,23 +8,31 @@ import {
   Patch,
   Post,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('/upload')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('Upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
   @Post()
+  @Roles('ADMIN')
   @ApiOperation({ summary: 'Uploads a file' })
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'file', maxCount: 1 },
       { name: 'image', maxCount: 1 },
+      { name: 'mobileThumbnail', maxCount: 1 },
     ]),
   )
   async uploadFile(
@@ -46,6 +54,8 @@ export class UploadController {
       duration,
       genre,
       nftoken,
+      files.mobileThumbnail[0].originalname,
+      files.mobileThumbnail[0].buffer,
     );
     return {
       message: 'Files uploaded successfully',
@@ -53,6 +63,7 @@ export class UploadController {
   }
 
   @Patch(':id')
+  @Roles('ADMIN')
   @ApiOperation({ summary: 'Atualiza um vídeo' })
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -105,6 +116,7 @@ export class UploadController {
   }
 
   @Delete(':id')
+  @Roles('ADMIN')
   @ApiOperation({ summary: 'Deleta um vídeo' })
   async deleteVideo(@Param('id') id: string) {
     await this.uploadService.deleteVideo(id);
@@ -120,6 +132,7 @@ export class UploadController {
   }
 
   @Get('/users')
+  @Roles('ADMIN')
   @ApiOperation({ summary: 'Retorna todos os usuários' })
   async getAllUsers() {
     return await this.uploadService.getAllUsers();

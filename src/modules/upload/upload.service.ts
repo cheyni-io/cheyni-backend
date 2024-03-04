@@ -28,11 +28,14 @@ export class UploadService {
     duration: string,
     genre: string,
     nftoken: string,
+    mobileThumbnailName?: string,
+    mobileThumbnail?: Buffer,
   ) {
     const newUpload = new UploadEntity({
       ...new CreateUploadDTO(),
       name: fileName,
       thumbnail: thumbnailName,
+      mobileThumbnail: mobileThumbnailName,
       description: description,
       title: title,
       duration: duration,
@@ -52,6 +55,14 @@ export class UploadService {
         Bucket: 'cheyni',
         Key: thumbnailName,
         Body: thumbnail,
+      }),
+    );
+
+    await this.s3Client.send(
+      new PutObjectCommand({
+        Bucket: 'cheyni',
+        Key: mobileThumbnailName,
+        Body: mobileThumbnail,
       }),
     );
     return await this.uploadRepository.saveVideo(newUpload);

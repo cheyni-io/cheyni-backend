@@ -7,21 +7,34 @@ import {
   Param,
   Delete,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { NftokenService } from './nftoken.service';
 import { CreateNftokenDto } from './dto/create-nftoken.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ResponseDTO } from 'src/components/commons/response.dto';
 import { UpdateNftokenDto } from './dto/update-nftoken.dto';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 // import { NFTokenDTO } from './dto/nftoken.dto';
 // import { UpdateNftokenDto } from './dto/update-nftoken.dto';
 
 @Controller('/nftoken')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('nftoken')
 export class NftokenController {
   constructor(private readonly nftokenService: NftokenService) {}
 
   @Post()
+  @Roles('ADMIN')
   @ApiOperation({ summary: 'Create a new NFToken' })
   @ApiBody({ type: CreateNftokenDto })
   @ApiResponse({
@@ -39,6 +52,7 @@ export class NftokenController {
   }
 
   @Get()
+  @Roles('ADMIN')
   @ApiOperation({ summary: 'Get all NFTokens' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -61,6 +75,7 @@ export class NftokenController {
   }
 
   @Patch(':id')
+  @Roles('ADMIN')
   @ApiOperation({ summary: 'Update a NFToken by id' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -72,6 +87,7 @@ export class NftokenController {
   }
 
   @Delete(':id')
+  @Roles('ADMIN')
   @ApiOperation({ summary: 'Delete a NFToken by id' })
   @ApiResponse({
     status: HttpStatus.OK,
