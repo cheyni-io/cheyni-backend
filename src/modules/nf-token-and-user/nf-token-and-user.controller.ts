@@ -17,7 +17,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('nf-token-and-user')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard, RolesGuard)
+// @UseGuards(JwtAuthGuard, RolesGuard)
 export class NfTokenAndUserController {
   constructor(private readonly nfTokenAndUserService: NfTokenAndUserService) {}
 

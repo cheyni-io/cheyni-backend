@@ -28,7 +28,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('/nftoken')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard, RolesGuard)
+// @UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('nftoken')
 export class NftokenController {
   constructor(private readonly nftokenService: NftokenService) {}
