@@ -11,7 +11,7 @@ import {
 
 import * as bcrypt from 'bcryptjs';
 import { NFTokenAndUserEntity } from './nfTokenAndUser.entity';
-import { ProfileEnum } from 'src/components/enum/profile.enum';
+// import { ProfileEnum } from 'src/components/enum/profile.enum';
 
 @Entity('users')
 export class UserEntity {
@@ -64,12 +64,12 @@ export class UserEntity {
   @Column({ nullable: true })
   balance: string;
 
-  @Column('enum', {
-    enum: ProfileEnum,
-    default: ProfileEnum.USER,
-    nullable: false,
-  })
-  profile: ProfileEnum;
+  // @Column('enum', {
+  //   enum: ProfileEnum,
+  //   default: ProfileEnum.USER,
+  //   nullable: false,
+  // })
+  // profile: ProfileEnum;
 
   @OneToMany(
     () => NFTokenAndUserEntity,
