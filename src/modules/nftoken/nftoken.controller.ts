@@ -21,8 +21,8 @@ import {
 import { ResponseDTO } from 'src/components/commons/response.dto';
 import { UpdateNftokenDto } from './dto/update-nftoken.dto';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
+// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+// import { RolesGuard } from '../auth/guards/roles.guard';
 // import { NFTokenDTO } from './dto/nftoken.dto';
 // import { UpdateNftokenDto } from './dto/update-nftoken.dto';
 

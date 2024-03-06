@@ -152,4 +152,8 @@ export class UploadService {
   async getVideoById(id: string) {
     return await this.uploadRepository.findVideoById(id);
   }
+
+  async findByTitle(title: string) {
+    return await this.uploadRepository.findVideoByTitle(title);
+  }
 }

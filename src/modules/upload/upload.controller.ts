@@ -8,15 +8,15 @@ import {
   Patch,
   Post,
   UploadedFiles,
-  UseGuards,
+  // UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { UploadService } from './upload.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
+// import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+// import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('/upload')
 @ApiBearerAuth()
@@ -142,5 +142,11 @@ export class UploadController {
   @ApiOperation({ summary: 'Retorna um vídeo' })
   async getVideoById(@Param('id') id: string) {
     return await this.uploadService.getVideoById(id);
+  }
+
+  @Get('/title/:title')
+  @ApiOperation({ summary: 'Retorna vídeos por título' })
+  async findByTitle(@Param('title') title: string) {
+    return await this.uploadService.findByTitle(title);
   }
 }

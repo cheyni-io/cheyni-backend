@@ -1,5 +1,5 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, ILike, Repository } from 'typeorm';
 
 import { UploadEntity } from 'src/entities/upload.entity';
 import { UpdateVideoDto } from './dto/update-video.dto';
@@ -49,6 +49,23 @@ export class UploadRepository extends Repository<UploadEntity> {
     return await this.findOne({
       where: { name },
       select: ['id', 'name', 'description', 'createdAt', 'updatedAt'],
+    });
+  }
+
+  async findVideoByTitle(title: string) {
+    return await this.find({
+      where: { title: ILike(`%${title}%`) },
+      select: [
+        'id',
+        'name',
+        'title',
+        'duration',
+        'genre',
+        'description',
+        'createdAt',
+        'updatedAt',
+        'thumbnail',
+      ],
     });
   }
 
