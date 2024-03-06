@@ -7,13 +7,12 @@ import {
   Param,
   Delete,
   HttpStatus,
-  UseGuards,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { NftokenService } from './nftoken.service';
-import { CreateNftokenDto } from './dto/create-nftoken.dto';
 import {
   ApiBearerAuth,
-  ApiBody,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -21,6 +20,7 @@ import {
 import { ResponseDTO } from 'src/components/commons/response.dto';
 import { UpdateNftokenDto } from './dto/update-nftoken.dto';
 import { Roles } from '../auth/decorators/roles.decorator';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 // import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 // import { RolesGuard } from '../auth/guards/roles.guard';
 // import { NFTokenDTO } from './dto/nftoken.dto';
@@ -36,19 +36,29 @@ export class NftokenController {
   @Post()
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Create a new NFToken' })
-  @ApiBody({ type: CreateNftokenDto })
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'tokenImage', maxCount: 1 }]))
+  // @ApiBody({ type: CreateNftokenDto })
   @ApiResponse({
     status: HttpStatus.CREATED,
     type: ResponseDTO,
-    description: 'The NFToken has been successfully createds.',
+    description: 'The NFToken has been successfully created.',
   })
   async create(
-    @Body() createNftokenDto: CreateNftokenDto,
-  ): Promise<ResponseDTO> {
-    return new ResponseDTO({
+    @UploadedFiles() files,
+    @Body('name') name: string,
+    @Body('token') token: string,
+    @Body('hash') hash: string,
+  ) {
+    await this.nftokenService.create(
+      files.tokenImage[0].originalname,
+      files.tokenImage[0].buffer,
+      name,
+      token,
+      hash,
+    );
+    return {
       message: 'The NFToken has been successfully created.',
-      data: await this.nftokenService.create(createNftokenDto),
-    });
+    };
   }
 
   @Get()

@@ -29,6 +29,12 @@ export class NFTokenEntity {
   token: string;
 
   @Column({ nullable: true })
+  tokenImage: string;
+
+  @Column({ nullable: true })
+  image: string;
+
+  @Column({ nullable: true })
   hash: string;
 
   @OneToOne(() => UploadEntity, (upload) => upload.nftoken, {
