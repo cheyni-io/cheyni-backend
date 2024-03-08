@@ -8,11 +8,12 @@ import { AdminUserRepository } from './adminUser.repository';
 import { AdminUserController } from './adminUser.controller';
 
 import { AdminUserService } from './adminUser.service';
+import { AdminEntity } from '../../entities/admin.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AdminUserRepository]), MailModule],
+  imports: [TypeOrmModule.forFeature([AdminEntity]), MailModule],
   controllers: [AdminUserController],
-  providers: [AdminUserService],
+  providers: [AdminUserService, AdminUserRepository],
   exports: [AdminUserService],
 })
 export class AdminUserModule {}

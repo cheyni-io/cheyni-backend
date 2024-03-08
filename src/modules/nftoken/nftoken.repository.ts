@@ -1,14 +1,11 @@
-import { Inject, Injectable, Scope } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 
 import { NFTokenEntity } from '../../entities/nftoken.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class NftokenRepository extends Repository<NFTokenEntity> {
-  constructor(
-    @Inject('CONNECTION')
-    private readonly nftokenDataSource: DataSource,
-  ) {
+  constructor(private readonly nftokenDataSource: DataSource) {
     super(NFTokenEntity, nftokenDataSource.createEntityManager());
   }
   async saveNftoken(nftoken: NFTokenEntity) {

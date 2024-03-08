@@ -1,4 +1,4 @@
-import { Inject, Injectable, Scope } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import { DataSource, ILike, Repository } from 'typeorm';
 
 import { UploadEntity } from '../../entities/upload.entity';
@@ -6,10 +6,7 @@ import { UpdateVideoDto } from './dto/update-video.dto';
 
 @Injectable({ scope: Scope.REQUEST })
 export class UploadRepository extends Repository<UploadEntity> {
-  constructor(
-    @Inject('CONNECTION')
-    private readonly uploadDataSource: DataSource,
-  ) {
+  constructor(private readonly uploadDataSource: DataSource) {
     super(UploadEntity, uploadDataSource.createEntityManager());
   }
   async saveVideo(video: UploadEntity) {

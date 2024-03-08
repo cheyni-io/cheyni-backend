@@ -1,10 +1,13 @@
 import { Injectable, Scope } from '@nestjs/common';
-import { Repository as TypeOrmRepository } from 'typeorm';
+import { DataSource, Repository as TypeOrmRepository } from 'typeorm';
 
 import { AdminEntity } from '../../entities/admin.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class AdminUserRepository extends TypeOrmRepository<AdminEntity> {
+  constructor(private readonly adminUserDataSource: DataSource) {
+    super(AdminEntity, adminUserDataSource.createEntityManager());
+  }
   public async findById(id: string): Promise<AdminEntity> {
     return this.findOne({
       where: {
