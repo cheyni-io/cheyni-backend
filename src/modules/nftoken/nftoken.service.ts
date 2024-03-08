@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 // import { CreateNftokenDto } from './dto/create-nftoken.dto';
 // import { UpdateNftokenDto } from './dto/update-nftoken.dto';
 import { NftokenRepository } from './nftoken.repository';
-import { NFTokenEntity } from 'src/entities/nftoken.entity';
+import { NFTokenEntity } from '../../entities/nftoken.entity';
 import { uuid } from 'uuidv4';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';

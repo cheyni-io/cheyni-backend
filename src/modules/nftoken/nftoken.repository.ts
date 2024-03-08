@@ -1,7 +1,7 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 
-import { NFTokenEntity } from 'src/entities/nftoken.entity';
+import { NFTokenEntity } from '../../entities/nftoken.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class NftokenRepository extends Repository<NFTokenEntity> {
@@ -11,7 +11,6 @@ export class NftokenRepository extends Repository<NFTokenEntity> {
   ) {
     super(NFTokenEntity, nftokenDataSource.createEntityManager());
   }
-
   async saveNftoken(nftoken: NFTokenEntity) {
     return this.save(nftoken);
   }

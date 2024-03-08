@@ -2,7 +2,7 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { UploadRepository } from './upload.repository';
-import { UploadEntity } from 'src/entities/upload.entity';
+import { UploadEntity } from '../../entities/upload.entity';
 import { CreateUploadDTO } from './dto/upload-video.dto';
 import { UsersRepository } from '../users/users.repository';
 

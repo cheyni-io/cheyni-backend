@@ -7,12 +7,12 @@ import {
   BeforeInsert,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { ProfileEnum } from 'src/components/enum/profile.enum';
+import { ProfileEnum } from '../components/enum/profile.enum';
 
 @Entity('admin')
 export class AdminEntity {
-  constructor(user?: Partial<AdminEntity>) {
-    Object.assign(this, user);
+  constructor(admin?: Partial<AdminEntity>) {
+    Object.assign(this, admin);
   }
 
   @PrimaryGeneratedColumn('uuid')

@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { plainToClass, Expose } from 'class-transformer';
-
-import { UserEntity } from 'src/entities/user.entity';
+import { UserEntity } from '../../../entities/user.entity';
 
 export class UserDTO {
   @ApiProperty()

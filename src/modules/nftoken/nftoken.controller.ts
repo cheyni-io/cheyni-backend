@@ -1,26 +1,26 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
   HttpStatus,
+  Param,
+  Patch,
+  Post,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { NftokenService } from './nftoken.service';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
   ApiOperation,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { ResponseDTO } from 'src/components/commons/response.dto';
-import { UpdateNftokenDto } from './dto/update-nftoken.dto';
+import { ResponseDTO } from '../../components/commons/swagger/dto/response.dto';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { UpdateNftokenDto } from './dto/update-nftoken.dto';
+import { NftokenService } from './nftoken.service';
 // import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 // import { RolesGuard } from '../auth/guards/roles.guard';
 // import { NFTokenDTO } from './dto/nftoken.dto';

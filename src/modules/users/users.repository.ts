@@ -1,15 +1,12 @@
-import { Inject, Injectable, Scope } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { Injectable, Scope } from '@nestjs/common';
+import { DataSource, Repository as TypeOrmRepository } from 'typeorm';
 
-import { UserEntity } from 'src/entities/user.entity';
+import { UserEntity } from '../../entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable({ scope: Scope.REQUEST })
-export class UsersRepository extends Repository<UserEntity> {
-  constructor(
-    @Inject('CONNECTION')
-    private readonly userDataSource: DataSource,
-  ) {
+export class UsersRepository extends TypeOrmRepository<UserEntity> {
+  constructor(private readonly userDataSource: DataSource) {
     super(UserEntity, userDataSource.createEntityManager());
   }
 
@@ -45,7 +42,28 @@ export class UsersRepository extends Repository<UserEntity> {
   async findUserByEmail(email: string) {
     return await this.findOne({
       where: { email },
-      select: ['id', 'name', 'email', 'password', 'createdAt', 'updatedAt'],
+      select: [
+        'id',
+        'name',
+        'email',
+        'avatar',
+        'birthDate',
+        'password',
+        'createdAt',
+        'updatedAt',
+      ],
+    });
+  }
+
+  async findByEmailAndResetPasswordToken(
+    email: string,
+    resetPasswordToken: string,
+  ) {
+    return await this.findOne({
+      where: { email, resetPasswordToken },
+      select: ['id', 'name', 'email', 'resetPasswordToken'],
+    }).catch((error) => {
+      throw new Error(error);
     });
   }
 }

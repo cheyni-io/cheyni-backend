@@ -1,18 +1,18 @@
 import {
-  Controller,
-  Post,
-  Body,
-  UseGuards,
-  Get,
   BadRequestException,
+  Body,
+  Controller,
+  Get,
   Param,
+  Post,
+  UseGuards,
 } from '@nestjs/common';
-import { NfTokenAndUserService } from './nf-token-and-user.service';
-import { CreateNFTokenAndUserDto } from './dto/create-nf-token-and-user.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { GetUser } from '../auth/decorators/get-user.decorator';
-import { UserPayloadDTO } from '../auth/dto/user-payload.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { GetUser } from '../auth/decorators/get-user.decorator';
+import { UserPayloadDTO } from '../auth/dtos/user-payload.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CreateNFTokenAndUserDto } from './dto/create-nf-token-and-user.dto';
+import { NfTokenAndUserService } from './nf-token-and-user.service';
 // import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('nf-token-and-user')

@@ -1,4 +1,4 @@
-import { ProfileEnum } from 'src/components/enum/profile.enum';
+import { ProfileEnum } from '../../../components/enum/profile.enum';
 
 export class AdminPayloadDTO {
   id: string;

@@ -1,21 +1,38 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
-import { json, urlencoded } from 'express';
-import { SwaggerConfig } from './config/swagger-config';
+import { AppModule } from './app.module';
+
+import * as express from 'express';
+import * as basicAuth from 'express-basic-auth';
+
+import { AdmSwagger } from './components/commons/swagger/adm-swagger.config';
+import { UserSwagger } from './components/commons/swagger/user-swagger.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('/api');
-  app.enableCors({ origin: '*' });
   app.useGlobalPipes(new ValidationPipe());
-  app.use(json({ limit: '50mb' }));
-  app.use(urlencoded({ limit: '50mb', extended: true }));
+  app.enableCors({ origin: '*' });
+  app.use(express.json({ limit: '50mb' }));
+  app.use(express.urlencoded({ limit: '50mb', extended: true }));
+  app.use(
+    'adm/swagger',
+    basicAuth({
+      challenge: true,
+      users: {
+        admin: 'admin',
+      },
+    }),
+  );
 
-  SwaggerModule.setup('/', app, SwaggerConfig.getData(app));
+  SwaggerModule.setup('/user/swagger', app, UserSwagger.getConfig(app));
+  SwaggerModule.setup('/admin/swagger', app, AdmSwagger.getConfig(app));
 
   await app.listen(3000);
+  console.log(
+    `Cheyni Backend Application is running on: ${await app.getUrl()}`,
+  );
 }
 bootstrap();

@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { UserEntity } from './user.entity';
+import { UserEntity } from '../entities/user.entity';
 import { NFTokenEntity } from './nftoken.entity';
 
 @Entity('nf_token_and_user')

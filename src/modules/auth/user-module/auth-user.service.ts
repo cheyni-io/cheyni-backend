@@ -1,39 +1,39 @@
 import {
+  BadRequestException,
   Injectable,
   UnauthorizedException,
-  BadRequestException,
 } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
-import { UsersRepository } from '../users/users.repository';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDTO } from '../users/dto/create-user.dto';
-import { UserEntity } from 'src/entities/user.entity';
-import { signInDTO } from './dto/signIn.dto';
-import * as bcrypt from 'bcrypt';
-import { UserPayloadDTO } from './dto/user-payload.dto';
 
-//Qual exception usar para o erro de usuário já existente?
-// import { BadRequestException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+
+import { UsersService } from '../../users/users.service';
+
+import { UserEntity } from '../../../entities/user.entity';
+
+import { UserPayloadDTO } from '../dtos/user-payload.dto';
+
+import { CreateUserDTO } from '../../users/dto/create-user.dto';
+import { signInDTO } from '../dtos/signIn.dto';
 
 @Injectable()
-export class AuthService {
+export class AuthUserService {
   constructor(
     private jwtService: JwtService,
     private userService: UsersService,
-    private readonly userRepository: UsersRepository,
   ) {}
 
   async createUser(user: CreateUserDTO) {
     //Verificar se já existe um usuário com o mesmo email
-    const userExists = await this.userRepository.findUserByEmail(user.email);
+    const userExists = await this.userService.findUserByEmail(user.email);
 
     if (userExists) {
       throw new BadRequestException('User already exists');
     }
     const newUser = new UserEntity({ ...user });
 
-    return await this.userRepository
-      .saveUser(newUser)
+    return await this.userService
+      .create(newUser)
       .then(() => {
         return 'Usuário criado com sucesso';
       })
@@ -55,20 +55,9 @@ export class AuthService {
     }
   }
 
-  // async refreshToken(reqToken: string) {
-  //   const token = reqToken.replace('Bearer ', '');
-  //   const payload = this.jwtService.decode(token);
-  //   const user: UserEntity = await this.userService.findById(payload['id']);
-  //   let access_token: string;
-
-  //   if (user) {
-  //     access_token = this.jwtService.sign(this.generateUserPayload(user));
-  //   } else {
-  //     throw new BadRequestException('Invalid credentials');
-  //   }
-
-  //   return { access_token };
-  // }
+  async forgotPassword(email: string) {
+    return await this.userService.updateResetPassword(email);
+  }
 
   private generateUserPayload(user: UserEntity) {
     const payload: UserPayloadDTO = {

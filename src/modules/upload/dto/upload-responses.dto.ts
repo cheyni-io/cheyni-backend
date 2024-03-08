@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { plainToClass, Expose } from 'class-transformer';
 
-import { UploadEntity } from 'src/entities/upload.entity';
+import { UploadEntity } from '../../../entities/upload.entity';
 
 export class UploadDTO {
   @ApiProperty()

@@ -1,6 +1,6 @@
 import { plainToClass } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { NFTokenEntity } from 'src/entities/nftoken.entity';
+import { NFTokenEntity } from '../../../entities/nftoken.entity';
 
 export class NFTokenDTO {
   @ApiProperty({ type: String, description: 'token' })

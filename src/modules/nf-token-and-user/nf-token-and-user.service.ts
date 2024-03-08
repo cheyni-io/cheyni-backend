@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { NFTokenAndUserEntity } from 'src/entities/nfTokenAndUser.entity';
-
+import { NFTokenAndUserEntity } from '../../entities/nfTokenAndUser.entity';
 import { NfTokenAndUserRepository } from './nf-token-and-user.repository';
 import { CreateNFTokenAndUserDto } from './dto/create-nf-token-and-user.dto';
 
