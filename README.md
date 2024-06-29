@@ -26,4 +26,4 @@ $ npm run dev
 $ npm run start
 ```
 
-Don't forget to get the ENV credentials on ENV-EXAMPLE
+Don't forget to get the ENV credentials on ENV.EXAMPLE
