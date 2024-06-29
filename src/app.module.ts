@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -21,31 +21,22 @@ import { HttpExceptionFilter } from './components/commons/exception/http-excepti
       cache: true,
       isGlobal: true,
     }),
-    // TypeOrmModule.forRoot({
-    //   type: 'postgres',
-    //   host: process.env.POSTGRES_HOST,
-    //   port: 49275,
-    //   username: process.env.POSTGRES_USER,
-    //   password: process.env.POSTGRES_PASSWORD,
-    //   database: process.env.POSTGRES_DATABASE,
-    //   entities: ['src/entities/**/*.entity.{ts,js}'],
-    //   migrationsTableName: 'migration',
-    //   migrations: ['src/migrations/**/*.{ts,js}'],
-    //   synchronize: false,
-    //   logging: true,
-    // }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'roundhouse.proxy.rlwy.net',
-      port: 49275,
-      username: 'postgres',
-      password: '1dAcEEc5DAA*3EC4g63b*3C2CBAAgdBd',
-      database: 'railway',
-      entities: ['dist/entities/**/*.entity.{ts,js}'],
-      migrationsTableName: 'migration',
-      migrations: ['dist/migrations/**/*.{ts,js}'],
-      synchronize: false,
-      logging: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('POSTGRES_HOST'),
+        port: configService.get<number>('POSTGRES_PORT'),
+        username: configService.get<string>('POSTGRES_USER'),
+        password: configService.get<string>('POSTGRES_PASSWORD'),
+        database: configService.get<string>('POSTGRES_DATABASE'),
+        entities: ['dist/entities/**/*.entity.{ts,js}'],
+        migrationsTableName: 'migration',
+        migrations: ['dist/migrations/**/*.{ts,js}'],
+        synchronize: false,
+        logging: true,
+      }),
+      inject: [ConfigService],
     }),
     UsersModule,
     AuthModule,
